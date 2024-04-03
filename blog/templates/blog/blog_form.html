@@ -2,11 +2,11 @@
 
 {% block content %}
     <div class="col-12">
-        <div class="row">
+        <div class="row" >
             <div class="col-6">
                 <div class="card">
                     <div class="card-body">
-                        <form method="post">
+                        <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             {{ form.as_p }}
                             <button type="submit" class="btn btn-success">
@@ -16,7 +16,7 @@
                                     Создать
                                 {% endif %}
                             </button>
-                        </form>
+                         </form>
                     </div>
                 </div>
             </div>

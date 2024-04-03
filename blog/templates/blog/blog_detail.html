@@ -9,10 +9,9 @@
             <div class="card mb-4 box-shadow">
                 <div class="card-body">
                     <h1 class="card-title">{{ object.title }}</h1>
-                    <img class="card-img-top" src="{ media_filter object.preview }" alt="На самом деле тут картинка">
+                    <img class="card-img-top" src="{ images_tag object.preview }" alt="На самом деле тут картинка">
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
                         <li>- {{ object.body }}</li>
-                        <li>- {{ object.preview }}</li>
                         <li>- {{ object.created_at }}</li>
                     </ul>
                     <div class="btn-group">
