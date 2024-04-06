@@ -6,6 +6,7 @@ from catalog.models import Product
 
 class HomeView(TemplateView):
     """Класс для вывода главной страницы"""
+    model = Product
     template_name = 'catalog/home.html'
 
     def get_context_data(self, **kwargs):
@@ -24,6 +25,16 @@ class HomeView(TemplateView):
 class ContactsView(TemplateView):
     """Класс для вывода страницы с контактами"""
     template_name = 'catalog/contacts.html'
+
+    def post(self, request):
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        message = request.POST.get('message')
+        print(f'Вы отправили новое сообщение от name(phone): message')
+        return render(request, 'catalog/contact.html')
+
+    def get(self, request):
+        return render(request, 'catalog/contact.html')
 
 
 # def contacts(request):
