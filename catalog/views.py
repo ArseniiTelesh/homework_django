@@ -31,10 +31,10 @@ class ContactsView(TemplateView):
         phone = request.POST.get('phone')
         message = request.POST.get('message')
         print(f'Вы отправили новое сообщение от name(phone): message')
-        return render(request, 'catalog/contact.html')
+        return render(request, 'catalog/contacts.html')
 
     def get(self, request):
-        return render(request, 'catalog/contact.html')
+        return render(request, 'catalog/contacts.html')
 
 
 # def contacts(request):
