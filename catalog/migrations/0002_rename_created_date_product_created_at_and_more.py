@@ -6,23 +6,25 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('catalog', '0001_initial'),
+        ("catalog", "0001_initial"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='product',
-            old_name='created_date',
-            new_name='created_at',
+            model_name="product",
+            old_name="created_date",
+            new_name="created_at",
         ),
         migrations.RenameField(
-            model_name='product',
-            old_name='date_of_last_changes',
-            new_name='updated_at',
+            model_name="product",
+            old_name="date_of_last_changes",
+            new_name="updated_at",
         ),
         migrations.AlterField(
-            model_name='product',
-            name='photo',
-            field=models.ImageField(blank=True, null=True, upload_to='Product_photo/', verbose_name='Фото'),
+            model_name="product",
+            name="photo",
+            field=models.ImageField(
+                blank=True, null=True, upload_to="Product_photo/", verbose_name="Фото"
+            ),
         ),
     ]

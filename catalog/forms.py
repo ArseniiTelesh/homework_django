@@ -1,21 +1,38 @@
 from django import forms
 
-from catalog.models import Product
+from catalog.models import Product, Version
 
 
 class ProductForm(forms.ModelForm):
 
-    prohibited = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
+    prohibited = [
+        "казино",
+        "криптовалюта",
+        "крипта",
+        "биржа",
+        "дешево",
+        "бесплатно",
+        "обман",
+        "полиция",
+        "радар",
+    ]
 
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = "__all__"
 
     def clean_name(self):
 
-        cleaned_data =  self.cleaned_data['name']
+        cleaned_data = self.cleaned_data["name"]
 
         for word in self.prohibited:
             if word in cleaned_data.lower():
-                raise forms.ValidationError('Не поясничай')
+                raise forms.ValidationError("Не поясничай")
         return cleaned_data
+
+
+class VersionForm(forms.ModelForm):
+
+    class Meta:
+        model = Version
+        exclude = "__all__"
