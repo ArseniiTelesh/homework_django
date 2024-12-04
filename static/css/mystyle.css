@@ -1,0 +1,25 @@
+.formset-container {
+  display: flex; /* Используем Flexbox */
+  flex-wrap: wrap; /* Позволяет карточкам переходить на новую строку */
+  gap: 20px; /* Пробел между карточками */
+}
+
+.formset-card {
+  flex: 1 1 calc(30% - 20px); /* Каждая карточка занимает 30% ширины контейнера минус отступы */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень для карточек */
+  padding: 20px; /* Внутренние отступы */
+  border-radius: 5px; /* Закругленные углы */
+  background-color: #fff; /* Цвет фона */
+}
+
+@media (max-width: 768px) {
+  .formset-card {
+    flex: 1 1 calc(45% - 20px); /* Две карточки в ряд на меньших экранах */
+  }
+}
+
+@media (max-width: 480px) {
+  .formset-card {
+    flex: 1 1 100%; /* Одна карточка в ряд на самых маленьких экранах */
+  }
+}
