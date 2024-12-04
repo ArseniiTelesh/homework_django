@@ -47,24 +47,20 @@ class VersionForm(forms.ModelForm):
         model = Version
         exclude = "__all__"
 
-    def clean(self):
+    def clean_current_version(self):
         cleaned_data = super().clean()
         current_version = cleaned_data.get('current_version')
+
         if current_version:
-            current_versions = Version.objects.filter(current_version=True)
-            if self.instance.pk:
+            # Получаем все текущие версии для продукта
+            current_versions = Version.objects.filter(product=self.instance.product, current_version=True)
+
+            if self.instance.pk:  # Если это уже существующая версия
+                # Исключаем текущую версию из проверки, если она была изменена
                 current_versions = current_versions.exclude(pk=self.instance.pk)
+
             if current_versions.exists():
                 raise forms.ValidationError("Может быть только одна активная версия.")
-        return cleaned_data
 
-
-# class VersionFormset(forms.BaseInlineFormSet):
-#     def clean(self):
-#         super().clean()
-#         count = 0
-#         for form in self.forms:
-#             if form.instance.indicates_current_version:
-#                 count += 1
-#         if count > 1:
-#             raise forms.ValidationError("Может быть только 1 активная версия")
+        # Возвращаем значение флажка current_version
+        return current_version

@@ -1,43 +1,43 @@
 {% extends 'catalog/base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block content %}
 
+<head>
+    <link rel="stylesheet" href="{% static 'css/mystyle.css' %}">
+</head>
 
 <form method="post" enctype="multipart/form-data">
-    <div class="col-12">
-        <div class="row">
-            <div class="col-6">
-                <div class="card">
-                    <div class="card-header">
-                        {% if object %}
-                        <h4 class="card-title">Редактирование продукта</h4>
-                        {% else %}
-                        <h4 class="card-title">Создание продукта</h4>
-                        {% endif %}
-                    </div>
-                    <div class="card-body">
-                        {% csrf_token %}
-                        {{ form|crispy }}
-                    </div>
-                </div>
+    <div class="formset-card">
+        <div class="card">
+            <div class="card-header">
+                {% if object %}
+                <h4 class="card-title">Редактирование продукта</h4>
+                {% else %}
+                <h4 class="card-title">Создание продукта</h4>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                {% csrf_token %}
+                {{ form|crispy }}
             </div>
         </div>
+    </div>
 
-        <div class="col-4">
+    <div class="formset-container">
+        {{ formset.management_form }}
+        {% for form in formset %}
+        <div class="formset-card">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">
-                        Версия продукта
-                    </h4>
+                    <h4 class="card-title">Версия продукта</h4>
                 </div>
                 <div class="card-body">
-                    {{ formset.management_form }}
-                    {% for form in formset.forms %}
                     {{ form|crispy }}
-                    {% endfor %}
                 </div>
             </div>
         </div>
+        {% endfor %}
     </div>
     <button type="submit" class="btn btn-success">
         {% if object %}
@@ -47,6 +47,5 @@
         {% endif %}
     </button>
 </form>
-
 
 {% endblock %}
