@@ -1,0 +1,32 @@
+{% extends 'catalog/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/mystyle.css' %}">
+</head>
+
+<form method="post" enctype="multipart/form-data">
+    <div class="formset-card">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Авторизация</h4>
+            </div>
+            <div class="card-body">
+                {% csrf_token %}
+                {{ form|crispy }}
+            </div>
+            <div class="card-footer">
+                <a class="text-muted" href="{% url 'users:reset_password' %}">Забыли пароль?</a>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <button type="submit" class="btn btn-success">
+        Войти
+    </button>
+</form>
+
+{% endblock %}

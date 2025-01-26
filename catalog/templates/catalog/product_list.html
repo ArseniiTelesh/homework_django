@@ -26,7 +26,9 @@
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
                     <p>- {{object.description|slice:100}}</p>
                         {% if object.active_version %}
-                        <p>- Версия: {{ object.active_version }}, Название: {{ object.version_name }}</p>
+                        <p>- Версия: {{ object.active_version }}</p>
+                        <p>- Название: {{ object.version_name }}</p>
+
                         {% else %}
                         <li>- Нет текущей версии</li>
                         {% endif %}
