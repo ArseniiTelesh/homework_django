@@ -5,10 +5,10 @@ from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView, UpdateView
 
 from config.settings import EMAIL_HOST_USER
-from users.forms import UserRegisterForm, ResetPasswordForm
+from users.forms import UserRegisterForm, ResetPasswordForm, ProfileUpdateForm
 from users.models import User
 
 
@@ -81,3 +81,22 @@ class UserResetPasswordView(PasswordResetView):
             return redirect(reverse('users:login'))
         except User.DoesNotExist:
             return HttpResponse('Пользователь с таким адресом электронной почты не найден.')
+
+class ProfileDetailView(DetailView):
+    """Класс для вывода профиля пользователя"""
+
+    model = User
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
+class ProfileUpdateView(UpdateView):
+    """Класс для вывода формы редактирования профиля пользователя"""
+
+    model = User
+    form_class = ProfileUpdateForm
+    success_url = reverse_lazy("users:profile_detail")
+
+    def get_object(self, queryset=None):
+        return self.request.user

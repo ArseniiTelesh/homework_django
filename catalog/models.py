@@ -1,6 +1,8 @@
 from django.db import models
 from django.db.models import ForeignKey
 
+from users.models import User
+
 NULLABLE = {"blank": True, "null": True}
 
 
@@ -39,6 +41,8 @@ class Product(models.Model):
     updated_at = models.DateTimeField(
         auto_now_add=True, verbose_name="Дата последнего изменения"
     )
+    owner = ForeignKey(User, on_delete=models.SET_NULL, verbose_name='Владелец', help_text="Создан пользователем",
+                       **NULLABLE)
 
     def __str__(self):
         return f"{self.name}"
@@ -67,4 +71,3 @@ class Version(models.Model):
     class Meta:
         verbose_name = "Версия"
         verbose_name_plural = "Версии"
-

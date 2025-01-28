@@ -28,11 +28,10 @@
                         {% if object.active_version %}
                         <p>- Версия: {{ object.active_version }}</p>
                         <p>- Название: {{ object.version_name }}</p>
-
                         {% else %}
                         <li>- Нет текущей версии</li>
                         {% endif %}
-
+                    <p>- Владелец: {{ object.owner }}</p>
                     </ul>
                     <a href="product_detail/{{object.pk}}">
                         <button type="button" class="w-100 btn btn-lg btn-outline-primary">Перейти к товару</button>
