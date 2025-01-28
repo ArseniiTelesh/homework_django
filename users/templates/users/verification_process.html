@@ -1,0 +1,26 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .nav_btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+</style>
+
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Регистрация почти закончена!</h1>
+    <p class="lead">Мы выслали вам ссылку на почту для активации аккаунта. Перейдите по ней для окончания регистрации!
+    </p>
+</div>
+
+<div class="nav_btn">
+    <a class="btn btn-outline-primary" href="{% url 'catalog:home' %}" role="button">
+        На главную
+    </a>
+</div>
+
+{% endblock %}

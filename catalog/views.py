@@ -1,7 +1,9 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.http import request
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   TemplateView, UpdateView)
 
@@ -40,7 +42,7 @@ class ContactsView(TemplateView):
         return render(request, "catalog/contacts.html")
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     """Класс-контроллер для создания нового продукта"""
 
     model = Product
@@ -64,6 +66,9 @@ class ProductCreateView(CreateView):
         """Метод для сохранения формы при создании"""
 
         formset = self.get_context_data()["formset"]
+
+        form.instance.owner = self.request.user # Устанавливаем текущего пользователя как владельца продукта
+
         self.object = form.save()
         if formset.is_valid():
             formset.instance = self.object
@@ -79,7 +84,7 @@ class ProductDetailView(DetailView):
     model = Product
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     """Класс-контроллер для редактирования продукта"""
 
     model = Product
@@ -115,7 +120,7 @@ class ProductUpdateView(UpdateView):
         return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(DeleteView, LoginRequiredMixin):
     """Метод для удаления продукта"""
 
     model = Product
