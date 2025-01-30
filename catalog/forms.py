@@ -4,11 +4,9 @@ from catalog.models import Product, Version
 
 
 class ProductForm(forms.ModelForm):
-
-
     class Meta:
         model = Product
-        exclude = ['owner']
+        exclude = ['owner', ]
 
     prohibited = [
         "казино",
@@ -41,11 +39,16 @@ class ProductForm(forms.ModelForm):
         return cleaned_data
 
 
-class VersionForm(forms.ModelForm):
+class ProductModeratorForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['is_published', 'description', 'category']
 
+
+class VersionForm(forms.ModelForm):
     class Meta:
         model = Version
-        exclude = "__all__"
+        fields = "__all__"
 
     def clean_current_version(self):
         cleaned_data = super().clean()
@@ -53,7 +56,7 @@ class VersionForm(forms.ModelForm):
 
         if current_version:
             # Получаем все текущие версии для продукта
-            current_versions = Version.objects.filter(product=self.instance.product, current_version=True)
+            current_versions = Version.objects.filter(product=self.instance.product_id, current_version=True)
 
             if self.instance.pk:  # Если это уже существующая версия
                 # Исключаем текущую версию из проверки, если она была изменена

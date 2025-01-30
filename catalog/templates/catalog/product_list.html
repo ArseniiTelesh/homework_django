@@ -24,14 +24,14 @@
                 <div class="card-body">
                     <h1 class="card-title pricing-card-title">{{object.price}} ₽</h1>
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                    <p>- {{object.description|slice:100}}</p>
+                        <p>- {{object.description|slice:100}}</p>
                         {% if object.active_version %}
-                        <p>- Версия: {{ object.active_version }}</p>
-                        <p>- Название: {{ object.version_name }}</p>
+                        <p>- Версия: {{ object.active_version.version_number }}</p>
+                        <p>- Название: {{ object.active_version.version_name }}</p>
                         {% else %}
                         <li>- Нет текущей версии</li>
                         {% endif %}
-                    <p>- Владелец: {{ object.owner }}</p>
+                        <p>- Владелец: {{ object.owner }}</p>
                     </ul>
                     <a href="product_detail/{{object.pk}}">
                         <button type="button" class="w-100 btn btn-lg btn-outline-primary">Перейти к товару</button>

@@ -24,6 +24,7 @@
         </div>
     </div>
 
+    {% if user == product.owner %}
     <div class="formset-container">
         {{ formset.management_form }}
         {% for form in formset %}
@@ -39,6 +40,7 @@
         </div>
         {% endfor %}
     </div>
+    {% endif %}
     <button type="submit" class="btn btn-success">
         {% if object %}
         Сохранить

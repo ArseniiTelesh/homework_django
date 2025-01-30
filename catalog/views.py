@@ -1,4 +1,5 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
 from django.http import request
 from django.shortcuts import render, redirect
@@ -7,7 +8,7 @@ from django.views import View
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   TemplateView, UpdateView)
 
-from catalog.forms import ProductForm, VersionForm
+from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
 from catalog.models import Product, Version
 
 
@@ -65,17 +66,16 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         """Метод для сохранения формы при создании"""
 
+        form.instance.owner = self.request.user  # Устанавливаем текущего пользователя как владельца продукта
+        self.object = form.save()
         formset = self.get_context_data()["formset"]
 
-        form.instance.owner = self.request.user # Устанавливаем текущего пользователя как владельца продукта
-
-        self.object = form.save()
         if formset.is_valid():
             formset.instance = self.object
             formset.save()
             return super().form_valid(form)
-        else:
-            return self.render_to_response(self.get_context_data(form=form, formset=formset))
+
+        return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
 
 class ProductDetailView(DetailView):
@@ -90,7 +90,6 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy("catalog:home")
-
 
     def get_context_data(self, **kwargs):
         """Метод для вывода формы версии при редактировании продукта"""
@@ -108,7 +107,8 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         return context_data
 
     def form_valid(self, form):
-        """Метод для сохранения формы при создании"""
+        """Метод для сохранения формы при редактировании"""
+
         formset = self.get_context_data()["formset"]
         self.object = form.save()
 
@@ -118,6 +118,20 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)
 
         return self.render_to_response(self.get_context_data(form=form, formset=formset))
+
+    def get_form_class(self):
+        """Метод для выбора формы исходя из прав доступа"""
+
+        user = self.request.user
+        if user == self.object.owner:
+            return ProductForm
+        if (
+            user.has_perm("catalog.can_change_product_description")
+            and user.has_perm("catalog.can_change_product_category")
+            and user.has_perm("catalog.can_change_product_status")
+        ):
+            return ProductModeratorForm
+        raise PermissionDenied
 
 
 class ProductDeleteView(DeleteView, LoginRequiredMixin):
