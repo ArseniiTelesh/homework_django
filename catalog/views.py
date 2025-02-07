@@ -10,6 +10,7 @@ from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
 
 from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
 from catalog.models import Product, Version
+from catalog.services import get_categories_from_cache, get_products_from_cache
 
 
 class ProductListView(ListView):
@@ -25,6 +26,9 @@ class ProductListView(ListView):
             ).first()
             product.active_version = active_version
         return context_data
+
+    def get_queryset(self):
+        return get_products_from_cache()
 
 
 class ContactsView(TemplateView):
