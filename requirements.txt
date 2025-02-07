@@ -4,3 +4,5 @@ pillow
 ipython
 django-crispy-forms
 crispy-bootstrap4
+redis
+python-dotenv
